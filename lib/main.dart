@@ -308,7 +308,7 @@ class PhoneNumberController extends GetxController {
 Future<void> sendSmsWithLink(List<String> phoneNumbers) async {
   final twilioFlutter = TwilioFlutter(
     accountSid: 'ACef0f56e65a016dffffee200f55a130b6',
-    authToken: 'e7e8b90008cdc60ebbb69badb7984a75',
+    authToken: '3275f5eab6a35c1db8c274c4ea9b695a',
     twilioNumber: '+13184076572',
   );
 
