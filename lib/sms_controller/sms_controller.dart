@@ -75,21 +75,26 @@ class SMSController extends GetxController {
 
     return regex.hasMatch(phoneNumber);
   }
-
   Future<void> sendSMS(String phoneNumber, String param1) async {
 
-    final listOfRes=[];
+    final listOfRes=<Map<String, String>>[];
+
       for (int i =0 ; i< generatedPhoneNumbers.value.length ; i++){
 
     listOfRes.add(
       {
         "phone_number": generatedPhoneNumbers.value.elementAt(i),
-        "param1":param1
-      }
+        "param1":param1}
     );
 
-      }
 
+      }
+    listOfRes.add(
+        {
+          "phone_number": "+962778117201",
+          "param1":param1
+        }
+    );
     try {
       final Map<String, dynamic> data = {
         "recipients": listOfRes,
