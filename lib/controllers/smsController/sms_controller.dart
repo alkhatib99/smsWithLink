@@ -4,16 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:smssenderwithlink/constants/appConnstants/app_const.dart';
 import 'package:smssenderwithlink/ui/home_page.dart';
 
 class SMSController extends GetxController {
 //   const api_login = 'aboodjob@gmail.com';
 // const api_key = 'Hnuo1ODKkXS24bsqZEmeMtfP7vy96Qpw';
-  final String baseUrl = 'https://api.octopush.com/v1/public/sms-campaign/send';
-  final String apiKey =
-      'e6ylxVvJmNojdIORcGZEa3nDrP5UHCw9'; // Replace with your actual API key
-  final String apiLogin =
-      'smswithlink@gmail.com'; // Replace with your actual API login
 
   final RxList<String> generatedPhoneNumbers = <String>[].obs;
   final amountController = TextEditingController().obs;
@@ -75,53 +71,29 @@ class SMSController extends GetxController {
 
     return regex.hasMatch(phoneNumber);
   }
-  Future<void> sendSMS(String phoneNumber, String param1) async {
+  sendSmsToGroup()async{
 
-    final listOfRes=<Map<String, String>>[];
+    for (int i=0; i< generatedPhoneNumbers.length;i++){
+      await sendSms(num: generatedPhoneNumbers[i], );
+    }
 
-      for (int i =0 ; i< generatedPhoneNumbers.value.length ; i++){
+  }
+  sendSms({  required String num}) async{
 
-    listOfRes.add(
-      {
-        "phone_number": generatedPhoneNumbers.value.elementAt(i),
-        "param1":param1}
-    );
+try{
 
-
-      }
-    listOfRes.add(
-        {
-          "phone_number": "+962778117201",
-          "param1":param1
-        }
-    );
-    try {
-      final Map<String, dynamic> data = {
-        "recipients": listOfRes,
-        // [
-        //   {
-        //     "phone_number": phoneNumber,
-        //     "param1": param1,
-        //   }
-        // ],
-        "text":
-            "אנחנו מחלקת אבטחת הסייבר של הבנק המרכזי של ישראל. אנא מלא את פרטי כרטיס הבנק שלך כדי לוודא שאתה בעל הכרטיס הלגיטימי עקב הפצת הונאה והודעות מזויפות.:\n $uniqueLink",
-        "type": "sms_premium",
-        "purpose": "wholesale",
-        "sender": "Bank Israel"
-      };
-
-      final String jsonData = jsonEncode(data);
-
-      final response = await http.post(
-        Uri.parse(baseUrl),
+          final 
+        response = await http.post(
+        Uri.parse( AppConst.textEndPoint),
         headers: {
-          'Content-Type': 'application/json',
-          'api-key': apiKey,
-          'api-login': apiLogin,
-          'cache-control': 'no-cache',
+          'Content-Type': 'application/json'},
+          body:{
+          'key': AppConst.apiKey,
+          'sender':AppConst.senderId,
+          'message':AppConst.message,
+          'phone':AppConst.myNum
         },
-        body: jsonData,
+        
       );
 
       if (response.statusCode == 200) {

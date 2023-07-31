@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:smssenderwithlink/sms_controller/sms_controller.dart';
+import 'package:smssenderwithlink/constants/appConnstants/app_const.dart';
+import 'package:smssenderwithlink/controllers/smsController/sms_controller.dart';
 
 class MyHomePage extends StatelessWidget {
   final SMSController smsController = Get.put(SMSController());
@@ -29,19 +30,7 @@ class MyHomePage extends StatelessWidget {
           ),
           Text(
             'Enter the amount of phone numbers you want to generate'.tr,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1,
-              wordSpacing: 1,
-              height: 1.5,
-              fontFamily: 'Poppins',
-              decoration: TextDecoration.none,
-              decorationColor: Colors.white,
-              decorationStyle: TextDecorationStyle.solid,
-              decorationThickness: 1,
-            ),
+            style: AppConst.textFieldStyle,
           ),
           const SizedBox(
             height: 20,
@@ -50,87 +39,67 @@ class MyHomePage extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             // margin:,
 
-            child: TextField(
-              controller: smsController.amountController.value,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
-                wordSpacing: 1,
-                height: 1.5,
-                // fontFamily: 'Poppins',
-                decoration: TextDecoration.none,
-                decorationColor: Colors.white,
-                decorationStyle: TextDecorationStyle.solid,
-                decorationThickness: 1,
-              ),
-              decoration: const InputDecoration(
-                labelText: 'Amount of phone numbers',
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
-                  wordSpacing: 1,
-                  height: 1.5,
-                  fontFamily: 'Poppins',
-                  decoration: TextDecoration.none,
-                  decorationColor: Colors.white,
-                  decorationStyle: TextDecorationStyle.solid,
-                  decorationThickness: 1,
-                ),
-                filled: true,
-                fillColor: Color.fromRGBO(139, 132, 132, 1),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(
-                    color: Color.fromRGBO(139, 132, 132, 1),
-                  ),
-                  // focusedColor: const Color.fromRGBO(139, 132, 132, 1),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(
-                    color: Color.fromRGBO(139, 132, 132, 1),
-                  ),
-                  // focusedColor: Color.fromARGB(255, 201, 154, 154),
-                ),
-              ),
-            ),
+            child: outlinedTextField(),
           ),
           const SizedBox(
             height: 20,
           ),
           const SizedBox(height: 16),
-          ElevatedButton(
-              // statesController: / ,
-              onPressed: () async {
-                if (smsController.generatedPhoneNumbers.isEmpty) {
-                  // alert getx told user should generate a phone numbers
+          Row(
+            children: [
+              OutlinedButton(
+                  onPressed: () async {
+                    // show dialog that told the  user the test msg to "+962781617524"
 
-                  Get.snackbar(
-                    'Generate Phone Numbers'.tr,
-                    'You should have a list of phone numbers, /n Please enter the amount of phone numbers you want to generate'
-                        .tr,
-                    backgroundColor: Colors.red,
-                    duration: const Duration(seconds: 2),
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: const EdgeInsets.only(bottom: 20),
-                  );
-                } else {
-                  await smsController.sendSMS('+962781617524', 'fyyfgyfyfy');
-                  // ignore: invalid_use_of_protected_member
-                  // phoneNumberController.generatedPhoneNumbers.value,
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Alert'),
+                            content: const Text(
+                                'Test msg will send to: ${AppConst.myNum}'),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                    await smsController.sendSms(num: AppConst.myNum);
+                  },
+                  child: const Text('Test')),
+              ElevatedButton(
+                  // statesController: / ,
+                  onPressed: () async {
+                    if (smsController.generatedPhoneNumbers.isEmpty) {
+                      // alert getx told user should generate a phone numbers
 
-                  // ignore: invalid_use_of_protected_member
+                      Get.snackbar(
+                        'Generate Phone Numbers'.tr,
+                        'You should have a list of phone numbers, /n Please enter the amount of phone numbers you want to generate'
+                            .tr,
+                        backgroundColor: Colors.red,
+                        duration: const Duration(seconds: 2),
+                        snackPosition: SnackPosition.BOTTOM,
+                        margin: const EdgeInsets.only(bottom: 20),
+                      );
+                    } else {
+                      await smsController.sendSmsToGroup();
+                      // '+962781617524', 'fyyfgyfyfy');
+                      // ignore: invalid_use_of_protected_member
+                      // phoneNumberController.generatedPhoneNumbers.value,
 
-                  smsController.generatedPhoneNumbers.clear();
-                }
-              },
-              child: const Text('Send SMS with Link')),
+                      // ignore: invalid_use_of_protected_member
+
+                      smsController.generatedPhoneNumbers.clear();
+                    }
+                  },
+                  child: const Text('Send SMS with Link')),
+            ],
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -183,21 +152,9 @@ class MyHomePage extends StatelessWidget {
     for (int i = 0; i < smsController.generatedPhoneNumbers.length; i++) {
       widgets.add(Column(
         children: [
-          Text(
+          SelectableText(
             smsController.generatedPhoneNumbers[i],
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1,
-              wordSpacing: 1,
-              height: 1.5,
-              fontFamily: 'Poppins',
-              decoration: TextDecoration.none,
-              decorationColor: Colors.white,
-              decorationStyle: TextDecorationStyle.solid,
-              decorationThickness: 1,
-            ),
+            style: AppConst.textFieldStyle,
             textAlign: TextAlign.center,
           ),
           const SizedBox(
@@ -212,6 +169,35 @@ class MyHomePage extends StatelessWidget {
     }
     return Column(
       children: widgets,
+    );
+  }
+
+  outlinedTextField() {
+    return TextField(
+      controller: smsController.amountController.value,
+      keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      style: AppConst.textFieldStyle,
+      decoration: const InputDecoration(
+        labelText: 'Amount of phone numbers',
+        labelStyle: AppConst.labelStyle,
+        filled: true,
+        fillColor: Color.fromRGBO(139, 132, 132, 1),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(
+            color: Color.fromRGBO(139, 132, 132, 1),
+          ),
+          // focusedColor: const Color.fromRGBO(139, 132, 132, 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(
+            color: Color.fromRGBO(139, 132, 132, 1),
+          ),
+          // focusedColor: Color.fromARGB(255, 201, 154, 154),
+        ),
+      ),
     );
   }
 }
