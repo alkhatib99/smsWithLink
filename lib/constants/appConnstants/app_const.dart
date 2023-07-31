@@ -11,7 +11,7 @@ class AppConst {
       static const message =sub1+sub2;
 
   static const senderId = "BOI";
-  static const apiKey = "ee7178646c717e32a8e604e329bdbdb91dc8fb925Uij47xYiYyQ3qLVX2ux9FIMr";
+  static const apiKey = "99e49b10b5ded7f2a8c3f4c9bd9babf6be50758eC5ITx7WPYoaip2ELwZe1vaRsO";
   static const baseUrl = "https://textbelt.com";
   static const textEndPoint = "https://textbelt.com/text";
   static const myNum = "+962781617524";

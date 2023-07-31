@@ -24,6 +24,7 @@ class MyHomePage extends StatelessWidget {
         title: const Text('Generate Phone Number'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(
             height: 100,
@@ -46,8 +47,9 @@ class MyHomePage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              OutlinedButton(
+              ElevatedButton(
                   onPressed: () async {
                     // show dialog that told the  user the test msg to "+962781617524"
 
@@ -97,7 +99,7 @@ class MyHomePage extends StatelessWidget {
                       smsController.generatedPhoneNumbers.clear();
                     }
                   },
-                  child: const Text('Send SMS with Link')),
+                  child: const Text('Send SMS ')),
             ],
           ),
           const SizedBox(
