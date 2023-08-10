@@ -86,7 +86,9 @@ try{
         response = await http.post(
         Uri.parse( AppConst.textEndPoint),
         headers: {
-          'Content-Type': 'application/json'},
+          // 'Content-Type': 'application/json'
+          
+          },
           body:{
           'key': AppConst.apiKey,
           'sender':AppConst.senderId,
